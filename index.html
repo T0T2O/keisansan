@@ -62,6 +62,9 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--star);outline-o
 .panel h3{margin:0 0 14px;font-size:14px;letter-spacing:.14em;color:var(--muted)}
 .name-row{display:flex;gap:10px;align-items:center}
 .name-row input{flex:1;min-width:0;height:54px;border-radius:16px;border:0;padding:0 18px;font-size:20px;font-weight:800;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 2px var(--line);user-select:text;-webkit-user-select:text}
+.hint-line2{margin:12px 0 0;font-size:13px;font-weight:700;color:var(--muted)}
+.hint-line2{position:relative;padding-left:18px}
+.hint-line2::before{content:"•";position:absolute;left:4px;color:var(--mint)}
 .save-line{margin:14px 0 18px;font-weight:700;color:var(--muted);font-size:15px;min-height:22px}
 .save-line b{color:var(--star);font-family:var(--disp);font-weight:400;font-size:20px}
 .rules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -239,9 +242,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--star);outline-o
     <div class="home-wrap">
       <div class="home-top">
         <div class="logo"><small>10分間の計算の旅</small><b>けいさん<br>スターロード</b></div>
-        <button class="gear" id="gearBtn" aria-label="先生用の設定">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
-        </button>
+        
       </div>
       <p class="lead">1つの星（レベル）は<b>60秒</b>。<b>ぜんぶ正解</b>でつぎの星へワープ！<br>まちがえたり時間ぎれになったら、同じ星にもう一度チャレンジ。どこまで進めるかな？</p>
 
@@ -255,6 +256,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--star);outline-o
             <div class="rule"><b id="ruleLevel">60秒</b><span>1つの星の時間</span></div>
             <div class="rule"><b>20</b><span>星（レベル）の数</span></div>
           </div>
+          <div class="hint-line2">同じ名前にすると記録がつながります。出席番号だけでもOK。</div>
           <div class="start-row">
             <button class="btn" id="startBtn">Lv1 から しゅっぱつ</button>
             <small>右の星図をタップすると、スタートする星をえらべるよ</small>
@@ -354,18 +356,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--star);outline-o
 
 <div class="overlay" id="cdLayer"><div class="cd" id="cdNum">3</div></div>
 <div class="overlay" id="timeupLayer"><div class="timeup">タイムアップ！<small>きょうの旅はここまで</small></div></div>
-<div class="overlay" id="settingsLayer">
-  <div class="card sheet">
-    <h3>先生用の設定</h3>
-    <p>この端末に保存されます。記録は「なまえ」ごとに残ります。</p>
-    <div class="set-row">ぜんたいの時間<div class="seg" data-set="total"><button data-v="5">5分</button><button data-v="10">10分</button><button data-v="15">15分</button></div></div>
-    <div class="set-row">1つの星の時間<div class="seg" data-set="level"><button data-v="45">45秒</button><button data-v="60">60秒</button><button data-v="90">90秒</button></div></div>
-    <div class="set-row">音<div class="seg" data-set="sound"><button data-v="1">ON</button><button data-v="0">OFF</button></div></div>
-    <div class="set-row">すべての星をえらべる<div class="seg" data-set="unlock"><button data-v="1">ON</button><button data-v="0">OFF</button></div></div>
-    <div class="set-row">このなまえの記録<button class="danger-btn" id="resetBtn">消す</button></div>
-    <div style="text-align:center;margin-top:16px"><button class="btn ghost" id="closeSet">とじる</button></div>
-  </div>
-</div>
+
 
 <script>
 /* ================= ユーティリティ ================= */
@@ -468,9 +459,17 @@ function buildQuestions(lv){
 
 /* ================= 保存 ================= */
 const KEY='keisan-starroad-v1';
-let store={players:{},last:'',settings:{total:10,level:60,sound:1,unlock:0}};
-try{const s=JSON.parse(localStorage.getItem(KEY));if(s){store=Object.assign(store,s);store.settings=Object.assign({total:10,level:60,sound:1,unlock:0},s.settings||{});}}catch(e){}
-const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}};
+const P=new URLSearchParams(location.search);
+const num=(k,d)=>{const v=parseFloat(P.get(k));return Number.isFinite(v)&&v>0?v:d;};
+// 設定はURLの指示（?t=全体分 &l=1レベル秒 &s=音 &u=開放 &reset=1）で決まる。生徒用ファイルには設定画面を置かない。
+const SET={total:num('t',10),level:num('l',60),sound:P.get('s')==='0'?0:1,unlock:P.get('u')==='1'?1:0};
+let store={players:{},last:'',settings:SET};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.players)store.players=s.players;if(s&&s.last)store.last=s.last;}catch(e){}
+store.settings=SET;
+let resetDone=false;
+if(P.get('reset')==='1'){try{localStorage.removeItem(KEY);}catch(e){}store.players={};store.last='';resetDone=true;
+  try{const u=new URL(location.href);u.searchParams.delete('reset');history.replaceState(null,'',u.toString());}catch(e){}}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify({players:store.players,last:store.last}));}catch(e){}};
 const pname=()=>($('nameInput').value.trim()||'ゲスト');
 const pdata=()=>store.players[pname()]||{max:1,best:{}};
 
@@ -727,20 +726,12 @@ $('retryBtn').onclick=showBrief;
 $('homeBtn').onclick=goHome;
 $('quitBtn').onclick=()=>{if(confirm('旅をおわりにして、リザルトを見る？')){clearInterval(ticker);phase='over';$('cdLayer').classList.remove('on');showResult();}};
 
-/* ================= 設定 ================= */
-function renderSettings(){
-  document.querySelectorAll('.seg').forEach(seg=>{const k=seg.dataset.set;[...seg.children].forEach(b=>b.classList.toggle('on',String(store.settings[k])===b.dataset.v));});
-}
-$('gearBtn').onclick=()=>{renderSettings();$('settingsLayer').classList.add('on');};
-$('closeSet').onclick=()=>{$('settingsLayer').classList.remove('on');renderHome();};
-document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;store.settings[seg.dataset.set]=Number(b.dataset.v);persist();renderSettings();}));
-$('resetBtn').onclick=()=>{if(confirm(`「${pname()}」の記録を消しますか？`)){delete store.players[pname()];persist();selLv=1;renderHome();}};
-
 /* ================= 初期化 ================= */
 $('stars').innerHTML=Array.from({length:90},()=>`<i style="--x:${r(0,100)}%;--y:${r(0,100)}%;--s:${pick([1,1,2,2,3])}px;--d:${(Math.random()*3+1.5).toFixed(2)}s"></i>`).join('');
 $('nameInput').value=store.last||'';
 selLv=Math.min(pdata().max,MAXLV);
 renderHome();
+if(resetDone)$('saveLine').textContent='この端末の記録をけしました。';
 </script>
 </body>
 </html>
